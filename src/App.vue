@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+    <arcgis-map></arcgis-map>
+    <!-- <hello></hello> -->
   </div>
 </template>
 
 <script>
 import Hello from './components/Hello'
+import arcgisMap from './components/Map'
 
 export default {
   name: 'app',
   components: {
-    Hello
+    Hello, arcgisMap
   }
 }
 </script>
 
 <style>
+@import '../static/css/reset.css';
+html,
+body,
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  height: 100%;
 }
 </style>
