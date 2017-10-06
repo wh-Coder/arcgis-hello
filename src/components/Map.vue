@@ -1,6 +1,7 @@
 <template>
     <div class="arcgisMap">
         <h1>{{ msg }}</h1>
+        <div id="search"></div>
         <div id="mapDiv"></div>
         <div id="legendDiv"></div>
         <div id="basemapGallery"></div>
@@ -25,33 +26,35 @@ export default {
             // first, we use Dojo's loader to require the map class
             esriLoader.dojoRequire([
                 'esri/map',
+                "esri/dijit/Search",
                 "esri/dijit/Directions",
                 "esri/dijit/BasemapGallery",
                 "esri/arcgis/utils",
                 "esri/dijit/Legend",
-            ], (Map, Directions, BasemapGallery, arcgisUtils, Legend) => {
+            ], (Map, Search, Directions, BasemapGallery, arcgisUtils, Legend) => {
                 // create map with the given options at a DOM node w/ id 'mapNode'
                 let map = new Map('mapDiv', {
                     center: [-105.255, 40.022],
                     zoom: 10,
                     basemap: 'topo'
                 });
-                //add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
-                var basemapGallery = new BasemapGallery({
-                    showArcGISBasemaps: true,
-                    map: map
-                }, "basemapGallery");
-                basemapGallery.startup();
 
-                basemapGallery.on("error", function(msg) {
-                    console.log("basemap gallery error:  ", msg);
+                var search = new Search({
+                    map: map,
+                }, "search");
+
+                search.startup();
+
+                map.on("load", () => {
+                    console.log('load')
+                });
+                search.on("select-result", () => {
+                    console.log('select-result')
+                });
+                search.on("clear-search", () => {
+                    console.log('clear-search')
                 });
 
-                var directions = new Directions({
-                    map: map,
-                    routeTaskUrl: "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Network/USA/NAServer/Route",
-                }, "dir");
-                directions.startup();
 
             });
         }
@@ -94,4 +97,10 @@ export default {
         z-index 99
         top 10px
         right 20px
+// #search 
+//     display: block
+//     position: absolute
+//     z-index: 3
+//     top: 20px
+//     left: 75px
 </style>
