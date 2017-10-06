@@ -3,6 +3,8 @@
         <h1>{{ msg }}</h1>
         <div id="mapDiv"></div>
         <div id="legendDiv"></div>
+        <div id="basemapGallery"></div>
+        <div id="dir"></div>
     </div>
 </template>
 
@@ -23,25 +25,34 @@ export default {
             // first, we use Dojo's loader to require the map class
             esriLoader.dojoRequire([
                 'esri/map',
+                "esri/dijit/Directions",
+                "esri/dijit/BasemapGallery",
                 "esri/arcgis/utils",
                 "esri/dijit/Legend",
-            ], (Map, arcgisUtils, Legend) => {
+            ], (Map, Directions, BasemapGallery, arcgisUtils, Legend) => {
                 // create map with the given options at a DOM node w/ id 'mapNode'
-                // let map = new Map('mapNode', {
-                //     center: [-118, 34.5],
-                //     zoom: 8,
-                //     basemap: 'dark-gray'
-                // });
-                arcgisUtils.createMap("1a40fa5cc1ab4569b79f45444d728067", "mapDiv").then(function(response) {
-                    map = response.map;
-
-                    var legend = new Legend({
-                        map: map,
-                        layerInfos: (arcgisUtils.getLegendLayers(response))
-                    }, "legendDiv");
-
-                    legend.startup();
+                let map = new Map('mapDiv', {
+                    center: [-105.255, 40.022],
+                    zoom: 10,
+                    basemap: 'topo'
                 });
+                //add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
+                var basemapGallery = new BasemapGallery({
+                    showArcGISBasemaps: true,
+                    map: map
+                }, "basemapGallery");
+                basemapGallery.startup();
+
+                basemapGallery.on("error", function(msg) {
+                    console.log("basemap gallery error:  ", msg);
+                });
+
+                var directions = new Directions({
+                    map: map,
+                    routeTaskUrl: "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Network/USA/NAServer/Route",
+                }, "dir");
+                directions.startup();
+
             });
         }
     },
