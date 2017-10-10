@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #info {
+            padding: 1em;
+        }
+    </style>
+    <link rel="stylesheet" href="http://js.arcgis.com/4.1/esri/css/main.css">
+    <script>
+        window.dojoConfig = {
+            // dojo 只能通过这种方式引入第三方库吗？
+            packages: [
+                {
+                    name: 'vue',
+                    location: 'https://cdn.bootcss.com/vue/2.4.4/',
+                    main: "vue"
+                }
+            ]
+        }
+    </script>
+    <script src="http://js.arcgis.com/4.1/"></script>        
+</head>
+
+<body>
+    <div id="info" class="esri-widget">
+        <camera-info :camera="camera"></camera-info>
+    </div>
+    <div id="viewDiv"></div>
+    <script src="app.js"></script>
+</body>
+
+</html>
